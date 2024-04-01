@@ -1,4 +1,3 @@
-import './App.css'
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from './pages/home';
 import Register from './pages/register';
@@ -17,10 +16,7 @@ function App() {
     <>
     <BrowserRouter>
                 <Routes>
-                    <Route
-                        path="/"
-                        element={<Navigate to="/home" replace={true} />}
-                    />
+                    <Route path="/" element={<Navigate to="/home" replace={true} />}/>
                     <Route path="/home" element={<Home />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />

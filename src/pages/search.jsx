@@ -97,7 +97,7 @@ export default function Search(){
       <img
         src={item.foto}
         onError = {() => setImgSrc("https://picsum.photos/200")}
-        style={{ borderRadius: 10 }}
+        style={{ borderRadius: 10,width: "350px", height : "350px" }}
         className="img-fluid"
         alt={item.nama_resep}
       />
