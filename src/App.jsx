@@ -8,6 +8,9 @@ import DetailMenu from './pages/detail_menu';
 import UserResep from './pages/user_resep';
 import UpdateResep from './pages/update_resep';
 import CreateMenu from './pages/create_menu';
+import { EditProfile } from "./pages/user_edit";
+import Auth from "./component/Auth";
+
 
 function App() {
 
@@ -20,11 +23,25 @@ function App() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/create_menu" element={<CreateMenu />} />
+                    <Route path="/create_menu" element={
+                    <Auth>
+                    <CreateMenu />
+                    </Auth>} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/detail_menu/:id" element={<DetailMenu />} />
-                    <Route path="/user_resep/:id" element={<UserResep />} />
-                    <Route path="/update_resep/:id" element={<UpdateResep />} />
+                    <Route path="/user_resep/:id" element={
+                    <Auth>
+                      <UserResep />
+                    </Auth>} />
+                    <Route path="/update_resep/:id" element={
+                    <Auth>
+                      <UpdateResep />
+                    </Auth>} />
+                    <Route path="/edit_profile" element={
+                    <Auth>
+                    <EditProfile />
+                    </Auth>
+                    } />
                 </Routes>
             </BrowserRouter>
     </>

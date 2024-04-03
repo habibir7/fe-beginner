@@ -1,52 +1,21 @@
-import Thumb from "../assets/tumbnail.png"
+import Thumb from "../assets/tumb.jpg"
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-const base_url = import.meta.env.VITE_BASE_URL;
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authLogout } from "../redux/action/auth";
 
 
 
 
 export default function Navigation(){
-  const [token,setToken] = useState(null)
-  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const authdata = useSelector((state) => state.auth.data);
 
-  useEffect(()=>{
-    let getToken = localStorage.getItem("token")
-    setToken(getToken)
-  },[localStorage])
-
-  const login = () => {
-      axios
-          .post(
-              base_url + "/auth",
-              {
-                  username: "habibi776",
-                  password: "habibi",
-              },
-              {
-                  headers: {
-                      "Content-Type": "application/x-www-form-urlencoded",
-                  },
-              }
-          )
-          .then((res) => {
-              console.log("success login");
-              console.log(res.data.token);
-              localStorage.setItem("token",res.data.token)
-              setToken(res.data.token)
-              setUserData(res.data);
-          })
-          .catch((err) => {
-              console.log("failed login");
-              console.log(err);
-          });
-  };
-
-  const logout = () => {
-    localStorage.clear()
-    setToken(null)
-  }
+    const logout = () => {
+        dispatch(authLogout())
+        navigate("/login");
+    };
 
 
 
@@ -56,6 +25,29 @@ export default function Navigation(){
         <nav className="navbar navbar-expand-lg">
   <div className="container-fluid">
     <ul className="nav navbar-nav">
+        {authdata ?
+        <>
+        <li>
+        <a
+          className="navbar text-decoration-none"
+          href="/create_menu"
+          style={{ marginRight: 80 }}
+        >
+          Add Menu
+        </a>
+      </li>
+      <li>
+      <a
+        className="navbar text-decoration-none"
+        href="/edit_profile"
+        style={{ marginRight: 80 }}
+      >
+        Edit Profile
+      </a>
+    </li>
+    </>
+        :
+      <>
       <li>
         <a
           className="navbar text-decoration-none"
@@ -74,6 +66,8 @@ export default function Navigation(){
           Login
         </a>
       </li>
+      </>
+        } 
       <li>
         <a
           className="navbar text-decoration-none"
@@ -83,17 +77,6 @@ export default function Navigation(){
           Search Menu
         </a>
       </li>
-      {token ?
-      <li>
-      <a
-        className="navbar text-decoration-none"
-        href="/create_menu"
-        style={{ marginRight: 80 }}
-      >
-        Add Menu
-      </a>
-    </li>
-      : null} 
         
       
     </ul>
@@ -108,26 +91,44 @@ export default function Navigation(){
 >
   <Link to="/user_resep/s20e12955-cc62-410c-bbcb-70a05d4e8fff">
   <img
-    src={Thumb}
+    src={authdata?.userData?.foto ?? Thumb}
     className="img-thumbnail"
     style={{ height: 64, width: 64, borderRadius: 100, borderStyle: "none" }}
     alt="..."
     />
    </Link>
   <div className="d-flex flex-column p-2">
-  {userData ? (
+  {authdata ? (
     <div>
     <a
-      href="edit_profile.html"
+      href="/edit_profile"
       style={{ textDecoration: "none", color: "black" }}
     >
-      <h6>{userData.surname}</h6>
+      <h6>{authdata?.userData?.surname ?? " - "}</h6>
     </a>
     </div>
-    ) : null}
-    <button className="btn btn-primary" onClick={token ? logout : login}>
-                        {token ? "logout" : "login"}
-                    </button>
+    ) : 
+    <div>
+      <p>Hello, Guest</p>
+    </div>
+    }
+     {authdata ? (
+                        <Link to=""
+                        style={{ textDecoration: "none", color: "black" }}
+                        >
+                        <p
+                            onClick={() => logout()}
+                        >
+                            Logout
+                        </p>
+                        </Link>
+                    ) : (
+                        <Link to="/login"
+                        style={{ textDecoration: "none", color: "black" }}
+                        >
+                            <h6>Login</h6>
+                        </Link>
+                    )}
   </div>
   
 </div>

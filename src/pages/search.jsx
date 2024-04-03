@@ -3,32 +3,19 @@ import Navigation from "../component/navigation"
 import axios from "axios"
 import { useState,useEffect } from "react"
 import { Link } from "react-router-dom"
-
-const base_url = import.meta.env.VITE_BASE_URL
+import { useSelector, useDispatch } from "react-redux"
+import { getResep } from "../redux/action/resep"
+import Thumb from "../assets/tumbresep.png"
 
 
 export default function Search(){
-    const  [data,setData] = useState([])
-    const [imgSrc, setImgSrc] = useState("Invalid Image Source");
-
-    async function getData(){
-        try{
-                let res = await axios.get(`${base_url}/resep`)
-                console.log(res.data.data)
-                setData(res.data.data)
-        }catch(err){
-                console.log(err)
-        }
-    }
-
-    useEffect(()=>{
-        getData()
-    },[])
-
-    useEffect(()=> {
-        console.log(data)
-    },[data])
-
+  const dispatch = useDispatch()
+	const resep = useSelector((state)=>state.resep)
+	
+	
+	useEffect(()=>{
+		dispatch(getResep())
+	},[])
     return(
         <>
 <Navigation />
@@ -55,6 +42,7 @@ export default function Search(){
         type="submit"
         className="btn btn-warning "
         style={{ padding: "15px 70px 15px 70px", textAlign: "center" }}
+        onClick={()=>dispatch(getResep())}
       >
         Search
       </button>
@@ -91,18 +79,17 @@ export default function Search(){
     </button>
   </div>
 
-  {data.length ? data.map((item,index) => (
-  <div className="row m-5" style={{ width: 725 }} key={index}>
-    <div className="col-7 m-0">
+  {resep.isSuccess && resep.data ? resep.data.map((item,index)=>(
+  <div className="row m-5" style={{ width: 750 }} key={index}>
+    <div className="col-6 m-0">
       <img
-        src={item.foto}
-        onError = {() => setImgSrc("https://picsum.photos/200")}
+        src={item.foto ? item.foto : Thumb}
         style={{ borderRadius: 10,width: "350px", height : "350px" }}
         className="img-fluid"
         alt={item.nama_resep}
       />
     </div>
-    <div className="col-5">
+    <div className="col-6">
       <Link
         to={`/detail_menu/${item.idresep}`}
         style={{
@@ -120,17 +107,17 @@ export default function Search(){
       </p>
       <p
         className="bg-warning"
-        style={{ textAlign: "center", borderRadius: 5 }}_
+        style={{ textAlign: "center", borderRadius: 5 }}
       >
         10 Likes - 12 Comment - 3 Bookmark
       </p>
       <div className="profile col-2 d-flex flow-row align-items-center">
         <img
-          src="../public/tumb-recipe.png"
+          src={item.fotouser}
           className="img-thumbnail"
           style={{
-            height: 64,
-            width: 68,
+            height: 60,
+            width: 60,
             borderRadius: 100,
             borderStyle: "none"
           }}

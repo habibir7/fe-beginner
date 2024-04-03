@@ -1,4 +1,7 @@
-
+import React, {useState} from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { authLogin } from "../redux/action/auth"
 
 
 
@@ -8,6 +11,26 @@
 
 
 export default function Login(){
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const authdata = useSelector((state) => state.auth)
+
+  const [inputData, setInputData] = useState({
+      username : "",
+      password : "",
+  })
+
+  const onChange = (e) => {
+    setInputData({...inputData, [e.target.name] : e.target.value})
+  }
+
+  const postData = (event) => {
+    event.preventDefault()
+    let data = inputData
+    console.log("inputData")
+		console.log(inputData)
+		dispatch(authLogin(data,navigate))
+  }
     return(
         <div className="container justify-content-center d-flex mt-5 flex-column align-items-center">
   <div className="header  mb-2 ">
@@ -51,30 +74,34 @@ export default function Login(){
     </p>
   </div>
   <div style={{ width: 400 }}>
-    <form action="menu.html">
+    <form onSubmit={postData}>
       <div className="form-outline mb-3">
-        <label className="form-label" htmlFor="form2Example1">
-          Email address
+        <label className="form-label" htmlFor="username">
+          Username
         </label>
         <input
-          type="email"
-          id="form2Example1"
+          type="text"
+          id="username"
+          name="username"
           className="form-control"
-          placeholder="Enter Email Address"
-          required=""
+          placeholder="Enter Username"
+          onChange={onChange}
+          required
         />
       </div>
       {/* Password input */}
       <div className="form-outline mb-4">
-        <label className="form-label" htmlFor="form2Example2">
+        <label className="form-label" htmlFor="password">
           Password
         </label>
         <input
           type="password"
-          id="form2Example2"
+          id="password"
+          name="password"
           className="form-control"
           placeholder="Password"
-          required=""
+          onChange={onChange}
+          required
         />
       </div>
       {/* 2 column grid layout for inline styling */}
@@ -89,7 +116,7 @@ export default function Login(){
               defaultValue=""
               id="form2Example31"
               defaultChecked=""
-              required=""
+              required
             />
             <label className="form-check-label" htmlFor="form2Example31">
               {" "}
@@ -98,7 +125,6 @@ export default function Login(){
           </div>
         </div>
       </div>
-      <a href="menu.html" style={{ textDecoration: "none" }}>
         <div className="d-grid gap-2 mx-auto">
           <button
             type="submit"
@@ -110,7 +136,6 @@ export default function Login(){
             Login
           </button>
         </div>
-      </a>
       Forget your password ?{" "}
       <a
         href="forgot_password.html"
@@ -132,6 +157,12 @@ export default function Login(){
         </p>
       </div>
     </form>
+    {authdata.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
+			{authdata.isError ? 
+			<div className="alert alert-danger">Login Failed : {authdata.ErrorMessage ?? "-"}</div>
+			: null}
   </div>
 </div>
 

@@ -3,33 +3,27 @@ import Footer from "../component/footer";
 import axios from "axios";
 import { useState,useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch,useSelector } from "react-redux";
+import { getResepByID } from "../redux/action/resep";
 
 const base_url = import.meta.env.VITE_BASE_URL
 
 
 export default function DetailMenu(){
+  const {id} = useParams()
 
-  const [data,setData] = useState(null)
-	const {id} = useParams()
+  const dispatch = useDispatch()
+	const resep = useSelector((state)=>state.resep)
 	
-	async function getData() {
-		try{
-			let res = await axios.get(`${base_url}/resep/${id}`)
-			console.log(res.data.data)
-			setData(res.data.data)
-		} catch(err){
-			console.log(err)
-		}
-	}
-    
-    useEffect(()=>{
-		getData()
-		console.log(id)
+	
+	useEffect(()=>{
+		dispatch(getResepByID(id))
 	},[])
 
-	useEffect(()=>{
-		console.log(data)
-	},[data])
+  const [data,setData] = useState(null)
+	
+	
+	
    return( 
     <>
    <Navigation />
@@ -38,7 +32,7 @@ export default function DetailMenu(){
   style={{ marginLeft: "auto", marginRight: "auto", marginBottom: 400 }}
 >
   <div className="container-fluid d-flex flex-column align-items-center">
-    <p style={{ fontSize: 50, color: "#2E266F" }}>{data ? (data.namaresep ? data.namaresep : null) : null}</p>
+    <p style={{ fontSize: 50, color: "#2E266F" }}>{resep ? (resep.namaresep ? resep.namaresep : null) : null}</p>
     <img
       className="img-fluid mt-3"
       src="../public/sandwich.jpeg"
@@ -48,7 +42,7 @@ export default function DetailMenu(){
   <div className="container-fluid d-flex flex-column align-items-baseline mt-3">
     <p style={{ fontSize: 40 }}>Ingredients</p>
     <div className="borderless">
-      <li>{data ? (data.komposisi ? data.komposisi : null) : null}</li>
+      <li>{data ? (resep.komposisi ? resep.komposisi : null) : null}</li>
     </div>
   </div>
   <div className="container-fluid">
