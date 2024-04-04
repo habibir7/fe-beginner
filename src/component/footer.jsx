@@ -29,7 +29,7 @@ export default function Footer(){
         </a>
       </li>
     </ul>
-    <p style={{ alignSelf: "flex-end" }}>Arkademy</p>
+    <p style={{ alignSelf: "flex-end" }}>PijarCamp</p>
   </div>
 </div>
 

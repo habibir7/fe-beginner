@@ -6,15 +6,13 @@ import { useParams } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import { getResepByID } from "../redux/action/resep";
 
-const base_url = import.meta.env.VITE_BASE_URL
-
 
 export default function DetailMenu(){
   const {id} = useParams()
 
   const dispatch = useDispatch()
-	const resep = useSelector((state)=>state.resep)
-	
+	const resepdetail = useSelector((state)=>state.resepdetail.data)
+  const authdata = useSelector((state) => state.auth.data);
 	
 	useEffect(()=>{
 		dispatch(getResepByID(id))
@@ -32,17 +30,17 @@ export default function DetailMenu(){
   style={{ marginLeft: "auto", marginRight: "auto", marginBottom: 400 }}
 >
   <div className="container-fluid d-flex flex-column align-items-center">
-    <p style={{ fontSize: 50, color: "#2E266F" }}>{resep ? (resep.namaresep ? resep.namaresep : null) : null}</p>
+    <p style={{ fontSize: 50, color: "#2E266F" }}>{resepdetail ? (resepdetail.namaresep ? resepdetail.namaresep : null) : null}</p>
     <img
       className="img-fluid mt-3"
-      src="../public/sandwich.jpeg"
+      src={resepdetail ? resepdetail.foto : null}
       style={{ width: 800, height: 650 }}
     />
   </div>
   <div className="container-fluid d-flex flex-column align-items-baseline mt-3">
     <p style={{ fontSize: 40 }}>Ingredients</p>
     <div className="borderless">
-      <li>{data ? (resep.komposisi ? resep.komposisi : null) : null}</li>
+      <li>{resepdetail ? (resepdetail.komposisi ? resepdetail.komposisi : null) : null}</li>
     </div>
   </div>
   <div className="container-fluid">
@@ -84,36 +82,6 @@ export default function DetailMenu(){
         <p>Wow, I just made this and it was delicious! Thanks for sharing!</p>
       </div>
     </div>
-    <div className="container-fluid d-flex" style={{ marginTop: 100 }}>
-      <img
-        src="../public/tumbnail.png"
-        className="img-fluid mt-2"
-        style={{
-          height: 64,
-          width: 64,
-          borderRadius: 100,
-          borderStyle: "none"
-        }}
-        alt="..."
-      />
-      <div
-        className="d-flex flex-column p-2 align-items-center"
-        style={{
-          borderRightWidth: 5,
-          borderRightColor: "goldenrod",
-          borderRightStyle: "solid"
-        }}
-      >
-        <h6 className="">Ariel</h6>
-        <p className="text-center fw-bolder">20 Recipes</p>
-      </div>
-      <div
-        className="d-flex flex-column p-2 justify-content-center"
-        style={{ marginLeft: 20 }}
-      >
-        <p>So simple and delicious!</p>
-      </div>
-    </div>
     <div
       className="d-flex"
       style={{
@@ -143,6 +111,7 @@ export default function DetailMenu(){
           width: 200,
           padding: "10px 25px 10px 25px"
         }}
+        disabled={authdata? false : true}
       >
         Send A Comment
       </button>

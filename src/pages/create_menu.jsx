@@ -2,21 +2,16 @@ import Navigation from "../component/navigation"
 import Footer from "../component/footer"
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-const base_url = import.meta.env.VITE_BASE_URL
-
+import { postMenu } from "../redux/action/resep";
+import { useDispatch,useSelector } from "react-redux";
 
 
 export default function CreateMenu(){
-    const [token,setToken] = useState(null)
-    useEffect(()=>{
-        let getToken = localStorage.getItem("token")
-        setToken(getToken)
-      },[localStorage])
+    const dispatch = useDispatch()
+    const create_resep = useSelector((state)=>state.create_resep)
+    const navigate = useNavigate();
 
     const [selectedKategori, setSelectedKategori] = useState('');
-    const navigate = useNavigate();
     const [foto, setFoto] = useState();
     const [inputData, setInputData] = useState({
         namaresep: "",
@@ -33,19 +28,7 @@ export default function CreateMenu(){
 		bodyData.append("idkategori",inputData.idkategori)
 		bodyData.append("foto",foto)
 
-		axios.post(base_url+"/resep",bodyData,{
-			headers: {
-				"Authorization" : `Bearer ${token}`,
-				"Content-Type": "multipart/form-data"
-			}
-		}).then((res)=>{
-			console.log("success")
-			console.log(res)
-			navigate("/search")
-		}).catch((err)=>{
-			console.log("failed")
-			console.log(err)
-		})
+		dispatch(postMenu(bodyData,navigate))
 	}
 
     const onChange = (e) => {
@@ -132,6 +115,13 @@ export default function CreateMenu(){
     </div>
   </form>
 </div>
+      {create_resep.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
+			{create_resep.isError ? 
+			<div className="alert alert-danger">Post Menu Failed : {create_resep.ErrorMessage ?? "-"}</div>
+			: null}
+
 <Footer />
         </>
     )

@@ -27,8 +27,6 @@ export default function Login(){
   const postData = (event) => {
     event.preventDefault()
     let data = inputData
-    console.log("inputData")
-		console.log(inputData)
 		dispatch(authLogin(data,navigate))
   }
     return(
@@ -148,7 +146,7 @@ export default function Login(){
         <p>
           Don`t have an account ?
           <a
-            href="register.html"
+            href="/register"
             style={{ textDecoration: "none", color: "#EFC81A" }}
           >
             {" "}

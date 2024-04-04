@@ -3,61 +3,95 @@ import Footer from "../component/footer"
 import axios from "axios"
 import { useState,useEffect } from "react"
 import { Link } from "react-router-dom"
-
-const base_url = import.meta.env.VITE_BASE_URL
-
-
+import { useSelector, useDispatch } from "react-redux"
+import { getResepUser } from "../redux/action/resep"
 
 
 export default function UserResep(){
-    const [token,setToken] = useState(null)
-    useEffect(()=>{
-        let getToken = localStorage.getItem("token")
-        setToken(getToken)
-      },[localStorage])
+  const dispatch = useDispatch()
+	const resepuser = useSelector((state)=>state.resepuser)
+  const authdata = useSelector((state) => state.auth.data);
+	console.log(resepuser)
+	
+	useEffect(()=>{
+		dispatch(getResepUser(authdata.userData.idusers))
+	},[])
 
     const  [data,setData] = useState([])
-    async function getData(){
-        try{
-                let res = await axios.get(`${base_url}/resep/users/20e12955-cc62-410c-bbcb-70a05d4e8fff`)
-                console.log(res.data.data)
-                setData(res.data.data)
-        }catch(err){
-                console.log(err)
-        }
-    }
 
-    async function deleteData(id) {
-        try {
-          await axios.delete(`${base_url}/resep/${id}`,{
-          headers: {
-            "Authorization" : `Bearer ${token}`
-          }});
-          // Reload the data after successful deletion
-          getData();
-        } catch (err) {
-          console.error(err);
-        }
-      }
-
-    useEffect(()=>{
-        getData()
-    },[])
-
-    useEffect(()=> {
-        console.log(data)
-    },[data])
 
 
     return(
         <>
         <Navigation />
-    {data ? (
-<div className="row m-5" style={{ width: 750 }}>
-  <div className="col-7 m-0">
+        <nav className="navbar navbar-expand-lg">
+  <div className="container-fluid">
+    <ul
+      className="nav navbar-nav"
+      style={{
+        borderBottomWidth: 10,
+        borderBottomColor: "goldenrod",
+        borderBottomStyle: "solid"
+      }}
+    >
+      <li>
+        <a
+          className="navbar text-decoration-none disabled"
+          href="profile_recipe.html"
+          style={{
+            marginLeft: 50,
+            marginRight: 80,
+            color: "black",
+            fontSize: 40,
+            fontWeight: "bold"
+          }}
+        >
+          Recipes
+        </a>
+      </li>
+      <li>
+        <a
+          className="navbar text-decoration-none disabled"
+          href="profile_bookmark.html"
+          style={{
+            marginRight: 80,
+            color: "black",
+            fontSize: 40,
+            fontWeight: "bold",
+            opacity: "25%"
+          }}
+        >
+          Bookmarked
+        </a>
+      </li>
+      <li>
+        <a
+          className="navbar text-decoration-none disabled"
+          href=""
+          style={{
+            marginRight: 80,
+            color: "black",
+            fontSize: 40,
+            fontWeight: "bold",
+            opacity: "25%"
+          }}
+        >
+          Liked
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{resepuser.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
+
+{resepuser.isSuccess && resepuser.data ? resepuser.data.map((item,index)=>(
+<div className="row m-5 align-items-center" style={{ width: 750 }} key={index}>
+  <div className="col-5 m-0">
     <img
-      src={data.foto}
-      style={{ borderRadius: 10 }}
+      src={item.foto}
+      style={{ borderRadius: 10, width: 250, height: 250 }}
       className="img-fluid"
       alt=""
     />
@@ -74,7 +108,7 @@ export default function UserResep(){
         paddingRight: 75
       }}
     >
-      {data.namaresep}
+      {item.namaresep}
     </a>
     <p className="mt-3" style={{ fontSize: 20 }}>
       {data.komposisi}
@@ -83,7 +117,7 @@ export default function UserResep(){
       10 Likes - 12 Comment - 3 Bookmark
     </p>
     <div className="profile d-flex flow-row align-items-center">
-        <Link to={`/update_resep/${data.idresep}`}>
+        <Link to={`/update_resep/${item.idresep}`}>
         <button
           type="submit"
           className="btn btn-info "
@@ -96,14 +130,13 @@ export default function UserResep(){
         type="submit"
         className="btn btn-danger "
         style={{ padding: "2px 25px 2px 25px" }}
-        onClick={() => deleteData(data.idresep)}
       >
         Delete Menu
       </button>
     </div>
   </div>
 </div>
-) : null}
+)) : null}
 
         <Footer />
         </>

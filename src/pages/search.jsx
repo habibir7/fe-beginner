@@ -1,11 +1,11 @@
 import Footer from "../component/footer"
 import Navigation from "../component/navigation"
-import axios from "axios"
 import { useState,useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { getResep } from "../redux/action/resep"
 import Thumb from "../assets/tumbresep.png"
+import Tumb from "../assets/tumb.jpg"
 
 
 export default function Search(){
@@ -16,9 +16,13 @@ export default function Search(){
 	useEffect(()=>{
 		dispatch(getResep())
 	},[])
+
     return(
         <>
 <Navigation />
+{resep.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
   <div className="container-fluid d-flex flex-row mb-3 m-0">
     <div className="container d-flex flex-column mb-3 m-0 w-50">
       <p
@@ -84,7 +88,7 @@ export default function Search(){
     <div className="col-6 m-0">
       <img
         src={item.foto ? item.foto : Thumb}
-        style={{ borderRadius: 10,width: "350px", height : "350px" }}
+        style={{ borderRadius: 10,width: "300px", height : "300px" }}
         className="img-fluid"
         alt={item.nama_resep}
       />
@@ -113,7 +117,7 @@ export default function Search(){
       </p>
       <div className="profile col-2 d-flex flow-row align-items-center">
         <img
-          src={item.fotouser}
+          src={item.fotouser ? item.fotouser : Tumb}
           className="img-thumbnail"
           style={{
             height: 60,

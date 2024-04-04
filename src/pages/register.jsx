@@ -1,14 +1,41 @@
-
-
-
-
-
-
+import React,{useState, useEffect} from "react";
+import { useSelector,useDispatch } from "react-redux";
+import { postUsers } from "../redux/action/auth";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 export default function Register(){
+  const dispatch = useDispatch()
+    const register = useSelector((state)=>state.register)
+    const navigate = useNavigate();
+
+    const [inputData, setInputData] = useState({
+        username: "",
+        password: "",
+        namalengkap: "",
+        surname: "",
+        email: "",
+        alamat: "",
+    });
+
+    const postData = (event) => {
+		event.preventDefault()
+		let bodyData = new FormData()
+		bodyData.append("username",inputData.username)
+		bodyData.append("password",inputData.password)
+		bodyData.append("namalengkap",inputData.namalengkap)
+    bodyData.append("surname",inputData.surname)
+    bodyData.append("email",inputData.email)
+    bodyData.append("alamat",inputData.alamat)
+
+		dispatch(postUsers(bodyData,navigate))
+	}
+
+    const onChange = (e) => {
+		setInputData({...inputData,[e.target.name] : e.target.value})
+	}
     return(
         <>
   <div className="container justify-content-center d-flex mt-5 flex-column align-items-center">
@@ -53,18 +80,34 @@ export default function Register(){
       </p>
     </div>
     <div style={{ width: 400 }}>
-      <form>
+      <form onSubmit={postData}>
         {/* Email input */}
         <div className="form-outline mb-3">
-          <label className="form-label" htmlFor="form2Example1">
-            Name
+          <label className="form-label" htmlFor="username">
+            Username
           </label>
           <input
             type="text"
-            id="form2Example1"
+            id="username"
+            name="username"
             className="form-control"
-            placeholder="Name"
-            required=""
+            placeholder="Username"
+            required
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-outline mb-3">
+          <label className="form-label" htmlFor="password">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="form-control"
+            placeholder="Password"
+            required
+            onChange={onChange}
           />
         </div>
         <div className="form-outline mb-3">
@@ -72,24 +115,56 @@ export default function Register(){
             Email address
           </label>
           <input
-            type="email"
-            id="form2Example1"
+            type="text"
+            id="email"
+            name="email"
             className="form-control"
             placeholder="Enter Email Address"
-            required=""
+            required
+            onChange={onChange}
           />
         </div>
         {/* Password input */}
         <div className="form-outline mb-4">
-          <label className="form-label" htmlFor="form2Example2">
-            Password
+          <label className="form-label" htmlFor="namalengkap">
+            Nama Lengkap
           </label>
           <input
-            type="password"
-            id="form2Example2"
+            type="text"
+            id="namalengkap"
+            name="namalengkap"
             className="form-control"
-            placeholder="Password"
-            required=""
+            placeholder="Nama Lengkap"
+            required
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-outline mb-4">
+          <label className="form-label" htmlFor="surname">
+            Surname
+          </label>
+          <input
+            type="text"
+            id="surname"
+            name="surname"
+            className="form-control"
+            placeholder="Surname"
+            required
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-outline mb-4">
+          <label className="form-label" htmlFor="alamat">
+            Alamat
+          </label>
+          <input
+            type="text"
+            id="alamat"
+            name="alamat"
+            className="form-control"
+            placeholder="Alamat"
+            required
+            onChange={onChange}
           />
         </div>
         {/* 2 column grid layout for inline styling */}
@@ -102,7 +177,6 @@ export default function Register(){
                 type="checkbox"
                 style={{ backgroundColor: "#EFC81A" }}
                 defaultValue=""
-                id="form2Example31"
                 defaultChecked=""
                 required=""
               />
@@ -118,8 +192,6 @@ export default function Register(){
             type="submit"
             className="btn btn-primary"
             style={{ backgroundColor: "#EFC81A" }}
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
           >
             Register Account
           </button>
@@ -129,7 +201,7 @@ export default function Register(){
           <p>
             Already have account ?
             <a
-              href="login.html"
+              href="/login"
               style={{ textDecoration: "none", color: "#EFC81A" }}
             >
               {" "}
@@ -140,53 +212,12 @@ export default function Register(){
       </form>
     </div>
   </div>
-  {/* Button trigger modal */}
-  {/* Modal */}
-  <div
-    className="modal fade"
-    id="exampleModal"
-    tabIndex={-1}
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div className="modal-dialog modal-dialog-centered">
-      <div className="modal-content">
-        <div className="modal-body" style={{ padding: "60px 60px 60px 60px" }}>
-          <p
-            className="modal-title fs-2 text-lg-center"
-            style={{ color: "#EFC81A", fontWeight: "bold" }}
-            id="exampleModalLabel"
-          >
-            You`re all set!
-          </p>
-          <p
-            style={{
-              marginTop: 50,
-              fontWeight: "bold",
-              fontSize: 13,
-              textAlign: "center"
-            }}
-          >
-            please check your account email for verification
-          </p>
-        </div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          style={{
-            width: "75%",
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginBottom: 30,
-            backgroundColor: "#EFC81A"
-          }}
-          data-bs-dismiss="modal"
-        >
-          Ok
-        </button>
-      </div>
-    </div>
-  </div>
+  {register.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
+			{register.isError ? 
+			<div className="alert alert-danger">Register Account Failed : {register.ErrorMessage ?? "-"}</div>
+			: null}
 </>
 
     )

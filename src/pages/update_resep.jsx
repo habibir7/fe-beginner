@@ -4,19 +4,17 @@ import axios from "axios";
 import { useState,useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-const base_url = import.meta.env.VITE_BASE_URL
+import { putMenu } from "../redux/action/resep";
+import { useDispatch,useSelector } from "react-redux";
+import { getResepByID } from "../redux/action/resep";
 
 
 
 
 export default function UpdateResep(){
-    const [token,setToken] = useState(null)
-    useEffect(()=>{
-        let getToken = localStorage.getItem("token")
-        setToken(getToken)
-      },[localStorage])
-      const navigate = useNavigate();
+  const dispatch = useDispatch()
+	const update_resep = useSelector((state)=>state.update_resep)
+    const navigate = useNavigate();
     const [foto, setFoto] = useState();
     const [inputData, setInputData] = useState({
         namaresep: "",
@@ -33,19 +31,7 @@ export default function UpdateResep(){
 		bodyData.append("idkategori",inputData.idkategori)
 		bodyData.append("foto",foto)
 
-		axios.put(base_url+"/resep/"+id,bodyData,{
-			headers: {
-				"Authorization" : `Bearer ${token}`,
-				"Content-Type": "multipart/form-data"
-			}
-		}).then((res)=>{
-			console.log("success")
-			console.log(res)
-			navigate("/search")
-		}).catch((err)=>{
-			console.log("failed")
-			console.log(err)
-		})
+		dispatch(putMenu(id,bodyData,navigate))
 	}
 
     const onChange = (e) => {
@@ -61,20 +47,11 @@ export default function UpdateResep(){
 	const {id} = useParams()
     const [selectedKategori, setSelectedKategori] = useState('');
 	
-	async function getData() {
-		try{
-			let res = await axios.get(`${base_url}/resep/${id}`)
-			console.log(res.data.data)
-			setData(res.data.data)
-		} catch(err){
-			console.log(err)
-		}
-	}
+    const resepdetail = useSelector((state)=>state.resepdetail.data)
     
     useEffect(()=>{
-		getData()
-		console.log(id)
-	},[])
+      dispatch(getResepByID(id))
+    },[])
 
     const handleKategoriChange = (event) => {
         setSelectedKategori(event.target.value);
@@ -96,9 +73,9 @@ export default function UpdateResep(){
     <div className="form-group">
       <label htmlFor="" />
       <span>
-      {foto && <img src={inputData.foto_url} width={500} />}
+       <img src={resepdetail ? inputData.foto_url ? inputData.foto_url : resepdetail.foto : null} style={{width: 600,height:600}} />
 					<div className="form-group">
-						<label htmlFor="foto">Foto</label>
+						<label htmlFor="foto"></label>
 						<input type="file" className="form-control" id="foto" required onChange={onChangeFoto} />
 					</div>
       </span>
@@ -113,7 +90,7 @@ export default function UpdateResep(){
         id="namaresep"
         className="form-control"
         placeholder="Title"
-        defaultValue={data ? (data.namaresep ? data.namaresep : null) : null}
+        defaultValue={resepdetail ? (resepdetail.namaresep ? resepdetail.namaresep : null) : null}
         aria-describedby="helpId"
         onChange={onChange}
       />
@@ -129,7 +106,7 @@ export default function UpdateResep(){
         placeholder="Ingredients"
         aria-describedby="helpId"
         defaultValue={
-            data ? (data.komposisi ? data.komposisi : null) : null
+            resepdetail ? (resepdetail.komposisi ? resepdetail.komposisi : null) : null
         }
         onChange={onChange}
       />
@@ -168,6 +145,12 @@ export default function UpdateResep(){
     </div>
   </form>
 </div>
+{update_resep.isLoading ? 
+			<div className="alert alert-primary">loading ...</div>
+			: null}
+			{update_resep.isError ? 
+			<div className="alert alert-danger">Post Menu Failed : {update_resep.ErrorMessage ?? "-"}</div>
+			: null}
         <Footer />
         </>
     )

@@ -45,6 +45,15 @@ export default function Navigation(){
         Edit Profile
       </a>
     </li>
+    <li>
+      <a
+        className="navbar text-decoration-none"
+        href="/user_resep"
+        style={{ marginRight: 80 }}
+      >
+        Resepku
+      </a>
+    </li>
     </>
         :
       <>
@@ -89,14 +98,12 @@ export default function Navigation(){
     borderLeftStyle: "solid"
   }}
 >
-  <Link to="/user_resep/s20e12955-cc62-410c-bbcb-70a05d4e8fff">
   <img
     src={authdata?.userData?.foto ?? Thumb}
     className="img-thumbnail"
     style={{ height: 64, width: 64, borderRadius: 100, borderStyle: "none" }}
     alt="..."
     />
-   </Link>
   <div className="d-flex flex-column p-2">
   {authdata ? (
     <div>

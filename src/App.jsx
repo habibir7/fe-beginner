@@ -29,7 +29,7 @@ function App() {
                     </Auth>} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/detail_menu/:id" element={<DetailMenu />} />
-                    <Route path="/user_resep/:id" element={
+                    <Route path="/user_resep" element={
                     <Auth>
                       <UserResep />
                     </Auth>} />
