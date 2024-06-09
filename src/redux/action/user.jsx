@@ -7,7 +7,7 @@ export const putUser = (id,data,navigate) => async (dispatch, getState) => {
     try {
 		let token = getState().auth.data.token
         dispatch({ type: "PUT_USER_PENDING" });
-        const res = await axios.put(base_url+"/users/" + id,data,{
+        const res = await axios.put(base_url+"/users/",data,{
 			headers: {
 				"Authorization" : `Bearer ${token}`,
 				"Content-Type": "multipart/form-data"

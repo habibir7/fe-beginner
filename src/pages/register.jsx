@@ -200,13 +200,13 @@ export default function Register(){
         <div className="text-center" style={{ marginTop: 50 }}>
           <p>
             Already have account ?
-            <a
-              href="/login"
+            <Link
+              to="/login"
               style={{ textDecoration: "none", color: "#EFC81A" }}
             >
               {" "}
               Log in here
-            </a>
+            </Link>
           </p>
         </div>
       </form>

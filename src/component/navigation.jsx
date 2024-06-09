@@ -58,33 +58,33 @@ export default function Navigation(){
         :
       <>
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none"
-          href="/register"
+          to="/register"
           style={{ marginRight: 80 }}
         >
           Register
-        </a>
+        </Link>
       </li>
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none"
-          href="/login"
+          to="/login"
           style={{ marginRight: 80 }}
         >
           Login
-        </a>
+        </Link>
       </li>
       </>
         } 
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none"
-          href="/search"
+          to="/search"
           style={{ marginRight: 80 }}
         >
           Search Menu
-        </a>
+        </Link>
       </li>
         
       
@@ -107,19 +107,19 @@ export default function Navigation(){
   <div className="d-flex flex-column p-2">
   {authdata ? (
     <div>
-    <a
-      href="/edit_profile"
+    <Link
+      to="/edit_profile"
       style={{ textDecoration: "none", color: "black" }}
     >
-      <h6>{authdata?.userData?.surname ?? " - "}</h6>
-    </a>
+      <h6>{authdata?.userData?.nama ?? " - "}</h6>
+    </Link>
     </div>
     ) : 
     <div>
       <p>Hello, Guest</p>
     </div>
     }
-     {authdata ? (
+    {authdata ? (
                         <Link to=""
                         style={{ textDecoration: "none", color: "black" }}
                         >

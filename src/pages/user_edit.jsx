@@ -15,20 +15,16 @@ export const EditProfile = () => {
     const navigate = useNavigate();
     const [foto, setFoto] = useState();
     const [inputData, setInputData] = useState({
-        namaresep: "",
-        komposisi: "",
-        idkategori: "",
+        nama: "",
         foto: "",
     });
 
     const putData = (event) => {
 		event.preventDefault()
 		let bodyData = new FormData()
-		bodyData.append("namalengkap",inputData.namalengkap)
-		bodyData.append("surname",inputData.surname)
-		bodyData.append("alamat",inputData.alamat)
+		bodyData.append("nama",inputData.nama)
 		bodyData.append("foto",foto)
-		dispatch(putUser(authdata.userData.username,bodyData,navigate))
+		dispatch(putUser(authdata.userData.idusers,bodyData,navigate))
 	}
 
     const onChange = (e) => {
@@ -49,7 +45,7 @@ export const EditProfile = () => {
 
   <div className="container justify-content-center d-flex mt-5 flex-column align-items-center">
     <img
-      src={update_user ? inputData.foto_url ? inputData.foto_url : update_user.foto : Thumb}
+      src={inputData?.foto_url ? inputData.foto_url : authdata.userData.foto}
       className="img-thumbnail mt-5"
       style={{
         height: 200,
@@ -57,7 +53,7 @@ export const EditProfile = () => {
         borderRadius: 100,
         borderStyle: "none"
       }}
-      alt="..."
+      alt="Profile Picture"
     />
   </div>
   <form className="container col-3" onSubmit={putData}>
@@ -78,35 +74,9 @@ export const EditProfile = () => {
       <input
         type="text"
         className="form-control"
-        id="namalengkap"
-        name="namalengkap"
-        defaultValue={authdata ? authdata?.userData?.namalengkap : null}
-        onChange={onChange}
-      />
-    </div>
-    <div className="mb-3">
-      <label htmlFor="surname" className="form-label">
-        Surname
-      </label>
-      <input
-        type="text"
-        className="form-control"
-        id="surname"
-        name="surname"
-        defaultValue={authdata ? authdata?.userData?.surname : null}
-        onChange={onChange}
-      />
-    </div>
-    <div className="mb-3">
-      <label htmlFor="alamat" className="form-label">
-        Alamat
-      </label>
-      <input
-        type="text"
-        className="form-control"
-        id="alamat"
-        name="alamat"
-        defaultValue={authdata ? authdata?.userData?.alamat : null}
+        id="nama"
+        name="nama"
+        placeholder={authdata ? authdata?.userData?.nama : null}
         onChange={onChange}
       />
     </div>
@@ -119,13 +89,13 @@ export const EditProfile = () => {
   </form>
   <p className="text-center mt-5">
     Change Password?
-    <a
-      href="change_password.html"
+    <Link
+      to="change_password.html"
       style={{ textDecoration: "none" }}
       className="text-warning"
     >
       Click here
-    </a>
+    </Link>
   </p>
   {update_user.isLoading ? 
 			<div className="alert alert-primary">loading ...</div>

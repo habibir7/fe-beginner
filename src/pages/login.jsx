@@ -16,7 +16,7 @@ export default function Login(){
   const authdata = useSelector((state) => state.auth)
 
   const [inputData, setInputData] = useState({
-      username : "",
+      email : "",
       password : "",
   })
 
@@ -74,15 +74,15 @@ export default function Login(){
   <div style={{ width: 400 }}>
     <form onSubmit={postData}>
       <div className="form-outline mb-3">
-        <label className="form-label" htmlFor="username">
-          Username
+        <label className="form-label">
+          Email
         </label>
         <input
           type="text"
-          id="username"
-          name="username"
+          id="email"
+          name="email"
           className="form-control"
-          placeholder="Enter Username"
+          placeholder="Enter Your Email"
           onChange={onChange}
           required
         />
@@ -135,23 +135,23 @@ export default function Login(){
           </button>
         </div>
       Forget your password ?{" "}
-      <a
-        href="forgot_password.html"
+      <Link
+        to="forgot_password.html"
         style={{ textDecoration: "none", color: "#EFC81A" }}
       >
         Click here
-      </a>
+      </Link>
       {/* Register buttons */}
       <div className="text-center" style={{ marginTop: 50 }}>
         <p>
           Don`t have an account ?
-          <a
-            href="/register"
+          <Link
+            to="/register"
             style={{ textDecoration: "none", color: "#EFC81A" }}
           >
             {" "}
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </form>
