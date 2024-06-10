@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Thumb from "../assets/tumb.jpg"
 import React,{useState,useEffect} from "react";
 import { putUser } from "../redux/action/user";
+import { Link } from "react-router-dom";
 
 
 
