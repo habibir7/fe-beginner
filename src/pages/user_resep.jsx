@@ -35,9 +35,9 @@ export default function UserResep(){
       }}
     >
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none disabled"
-          href="profile_recipe.html"
+          to="/user_resep"
           style={{
             marginLeft: 50,
             marginRight: 80,
@@ -47,12 +47,12 @@ export default function UserResep(){
           }}
         >
           Recipes
-        </a>
+        </Link>
       </li>
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none disabled"
-          href="profile_bookmark.html"
+          to="/user_bookmark"
           style={{
             marginRight: 80,
             color: "black",
@@ -62,12 +62,12 @@ export default function UserResep(){
           }}
         >
           Bookmarked
-        </a>
+        </Link>
       </li>
       <li>
-        <a
+        <Link
           className="navbar text-decoration-none disabled"
-          href=""
+          to="/user_like"
           style={{
             marginRight: 80,
             color: "black",
@@ -77,7 +77,7 @@ export default function UserResep(){
           }}
         >
           Liked
-        </a>
+        </Link>
       </li>
     </ul>
   </div>
@@ -98,8 +98,8 @@ export default function UserResep(){
   </div>
   
   <div className="col-5" >
-    <a
-      href="detail_menu.html"
+    <Link
+      to={`/detail_menu/${item.idresep}`}
       style={{
         textDecoration: "none",
         color: "black",
@@ -109,7 +109,7 @@ export default function UserResep(){
       }}
     >
       {item.namaresep}
-    </a>
+    </Link>
     <p className="mt-3" style={{ fontSize: 20 }}>
       {data.komposisi}
     </p>

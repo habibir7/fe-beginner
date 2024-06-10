@@ -34,29 +34,29 @@ export default function Navigation(){
         <li>
         <Link
           className="navbar text-decoration-none"
-          href="/create_menu"
+          to="/create_menu"
           style={{ marginRight: 80 }}
         >
           Add Menu
         </Link>
       </li>
       <li>
-      <a
+      <Link
         className="navbar text-decoration-none"
-        href="/edit_profile"
+        to="/edit_profile"
         style={{ marginRight: 80 }}
       >
         Edit Profile
-      </a>
+      </Link>
     </li>
     <li>
-      <a
+      <Link
         className="navbar text-decoration-none"
-        href="/user_resep"
+        to="/user_resep"
         style={{ marginRight: 80 }}
       >
         Resepku
-      </a>
+      </Link>
     </li>
     </>
         :

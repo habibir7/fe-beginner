@@ -90,7 +90,7 @@ export const EditProfile = () => {
   <p className="text-center mt-5">
     Change Password?
     <Link
-      to="change_password.html"
+      to="/reset_password"
       style={{ textDecoration: "none" }}
       className="text-warning"
     >
