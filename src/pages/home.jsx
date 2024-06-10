@@ -215,6 +215,5 @@ export default function Home(){
             <Footer />
         </footer>
       </>
-         
     )
 }

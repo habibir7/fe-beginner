@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react";
 import { useSelector,useDispatch } from "react-redux";
 import { postUsers } from "../redux/action/auth";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 
 

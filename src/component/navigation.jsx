@@ -8,9 +8,13 @@ import { authLogout } from "../redux/action/auth";
 
 
 export default function Navigation(){
-  const navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch()
     const authdata = useSelector((state) => state.auth.data);
+
+    // const toLogin = ()  =>{
+    //     navigate("/login");
+    // }
 
     const logout = () => {
         dispatch(authLogout())
@@ -28,13 +32,13 @@ export default function Navigation(){
         {authdata ?
         <>
         <li>
-        <a
+        <Link
           className="navbar text-decoration-none"
           href="/create_menu"
           style={{ marginRight: 80 }}
         >
           Add Menu
-        </a>
+        </Link>
       </li>
       <li>
       <a
@@ -70,6 +74,7 @@ export default function Navigation(){
         <Link
           className="navbar text-decoration-none"
           to="/login"
+          // onClick={()=> toLogin()}
           style={{ marginRight: 80 }}
         >
           Login
