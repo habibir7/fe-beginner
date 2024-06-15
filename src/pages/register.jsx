@@ -12,23 +12,17 @@ export default function Register(){
     const navigate = useNavigate();
 
     const [inputData, setInputData] = useState({
-        username: "",
         password: "",
-        namalengkap: "",
-        surname: "",
+        nama: "",
         email: "",
-        alamat: "",
     });
 
     const postData = (event) => {
 		event.preventDefault()
 		let bodyData = new FormData()
-		bodyData.append("username",inputData.username)
 		bodyData.append("password",inputData.password)
-		bodyData.append("namalengkap",inputData.namalengkap)
-    bodyData.append("surname",inputData.surname)
+		bodyData.append("nama",inputData.nama)
     bodyData.append("email",inputData.email)
-    bodyData.append("alamat",inputData.alamat)
 
 		dispatch(postUsers(bodyData,navigate))
 	}
@@ -83,15 +77,29 @@ export default function Register(){
       <form onSubmit={postData}>
         {/* Email input */}
         <div className="form-outline mb-3">
-          <label className="form-label" htmlFor="username">
-            Username
+          <label className="form-label" htmlFor="form2Example1">
+            Email address
           </label>
           <input
             type="text"
-            id="username"
-            name="username"
+            id="email"
+            name="email"
             className="form-control"
-            placeholder="Username"
+            placeholder="Enter Email Address"
+            required
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-outline mb-4">
+          <label className="form-label" htmlFor="nama">
+            Nama Lengkap
+          </label>
+          <input
+            type="text"
+            id="nama"
+            name="nama"
+            className="form-control"
+            placeholder="Nama Lengkap"
             required
             onChange={onChange}
           />
@@ -110,64 +118,6 @@ export default function Register(){
             onChange={onChange}
           />
         </div>
-        <div className="form-outline mb-3">
-          <label className="form-label" htmlFor="form2Example1">
-            Email address
-          </label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            className="form-control"
-            placeholder="Enter Email Address"
-            required
-            onChange={onChange}
-          />
-        </div>
-        {/* Password input */}
-        <div className="form-outline mb-4">
-          <label className="form-label" htmlFor="namalengkap">
-            Nama Lengkap
-          </label>
-          <input
-            type="text"
-            id="namalengkap"
-            name="namalengkap"
-            className="form-control"
-            placeholder="Nama Lengkap"
-            required
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-outline mb-4">
-          <label className="form-label" htmlFor="surname">
-            Surname
-          </label>
-          <input
-            type="text"
-            id="surname"
-            name="surname"
-            className="form-control"
-            placeholder="Surname"
-            required
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-outline mb-4">
-          <label className="form-label" htmlFor="alamat">
-            Alamat
-          </label>
-          <input
-            type="text"
-            id="alamat"
-            name="alamat"
-            className="form-control"
-            placeholder="Alamat"
-            required
-            onChange={onChange}
-          />
-        </div>
-        {/* 2 column grid layout for inline styling */}
         <div className="row mb-3">
           <div className="col d-flex">
             {/* Checkbox */}
